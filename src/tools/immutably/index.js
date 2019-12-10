@@ -4,12 +4,64 @@
   A set of helper functions for "mutating" immutable values.
 *******************************************************************************/
 
-/// imports ///
-import iffy from 'tools/iffy';
+/// tools ///
+import { boolean } from 'tools/iffy';
 
-/// exports ///
-export const toggle = (x) => {
-  if (iffy.boolean (x)) {
+/***********************************************************
+  MAIN
+***********************************************************/
+
+/***************************************
+  setters
+***************************************/
+
+/*--------------------------------------
+  set
+----------------------------------------
+  - make a copy (shallow) of an object
+  - directly set the value of one "path" (eg: a field or index)
+--------------------------------------*/
+export const set = (object, path, value) => ({
+  ...object,
+  [path] : value
+});
+
+/*--------------------------------------
+  setField, setItem
+----------------------------------------
+  - aliases for easier reading
+--------------------------------------*/
+export const setField = (object, field, value) =>
+  set (object, field, value);
+export const setItem = (array, index, value) =>
+  set (array, index, value);
+
+/*--------------------------------------
+  setBy
+----------------------------------------
+  - make a copy (shallow) of an object
+  - functionally set the value of one "path" (eg: a field or index)
+  - the function takes the original object, path, and original value of object[path]
+--------------------------------------*/
+export const setBy = (object, path, fun) =>
+  set (object, path, fun (object, path, object[path]));
+
+/*--------------------------------------
+  setFieldBy, setItemBy
+----------------------------------------
+  - aliases for easier reading
+--------------------------------------*/
+export const setFieldBy = (object, field, fun) =>
+  setBy (object, field, fun);
+export const setItemBy = (array, index, fun) =>
+  setBy (array, index, fun);
+
+/***************************************
+  togglers
+***************************************/
+
+export const _toggle = (x) => {
+  if (boolean (x)) {
     return (!x);
   } else {
     console.warn (`The value you're toggling isn't boolean.`);
@@ -18,86 +70,29 @@ export const toggle = (x) => {
   }
 };
 
-export class immutably {
-  // constructor () {
-  //   console.warn ('--> constructing immutably is unnecessary <--');
-  // }
+/*--------------------------------------
+  toggle
+----------------------------------------
+  - make a copy (shallow) of an object
+  - toggle the boolean value of one "path" (eg: a field or index)
+--------------------------------------*/
+export const toggle = (object, path) =>
+  set (object, path, _toggle (object[path]));
 
-  /***************************************
-    setters
-  ***************************************/
-  /*--------------------------------------
-    set
-  ----------------------------------------
-    - make a copy (shallow) of an object
-    - directly set the value of one "path" (eg: a field or index)
-  --------------------------------------*/
-  static set = (object, path, value) => ({
-    ...object,
-    [path] : value
-  });
-
-  /*--------------------------------------
-    setField, setItem
-  ----------------------------------------
-    - aliases for easier reading
-  --------------------------------------*/
-  static setField = (object, field, value) => (
-    immutably.set (object, field, value)
-  );
-  static setItem = (array, index, value) => (
-    immutably.set (array, index, value)
-  );
-
-  /*--------------------------------------
-    setBy
-  ----------------------------------------
-    - make a copy (shallow) of an object
-    - functionally set the value of one "path" (eg: a field or index)
-    - the function takes the original object, path, and original value of object[path]
-  --------------------------------------*/
-  static setBy = (object, path, fun) => (
-    immutably.set (object, path, fun (object, path, object[path]))
-  );
-
-  /*--------------------------------------
-    setFieldBy, setItemBy
-  ----------------------------------------
-    - aliases for easier reading
-  --------------------------------------*/
-  static setFieldBy = (object, field, fun) => (
-    immutably.setBy (object, field, fun)
-  );
-  static setItemBy = (array, index, fun) => (
-    immutably.setBy (array, index, fun)
-  );
-
-  /***************************************
-    togglers
-  ***************************************/
-  /*--------------------------------------
-    toggle
-  ----------------------------------------
-    - make a copy (shallow) of an object
-    - toggle the boolean value of one "path" (eg: a field or index)
-  --------------------------------------*/
-  static toggle = (object, path) => (
-    immutably.set (object, path, toggle (object[path]))
-  );
-
-  /*--------------------------------------
-    toggleField, toggleItem
-  ----------------------------------------
-    - aliases for easier reading
-  --------------------------------------*/
-  static toggleField = (object, field) => (
-    immutably.toggle (object, field)
-  );
-  static toggleItem = (array, index) => (
-    immutably.toggle (array, index)
-  );
-}
+/*--------------------------------------
+  toggleField, toggleItem
+----------------------------------------
+  - aliases for easier reading
+--------------------------------------*/
+export const toggleField = (object, field) =>
+  toggle (object, field);
+export const toggleItem = (array, index) =>
+  toggle (array, index);
 
 /**************************************/
 
-export default immutably;
+export default {
+  set, setField, setItem,
+  setBy, setFieldBy, setItemBy,
+  toggle, toggleField, toggleItem,
+};
