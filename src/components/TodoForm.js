@@ -8,29 +8,30 @@ import immutably from 'tools/immutably';
   MAIN
 ***************************************/
 const TodoForm = ({ dispatcher, ...rest }) => {
-  // form state
-  const [state, setState] = React.useState ({ text : '' });
+  // form item
+  const [item, setItem] = React.useState ({
+    'text' : '',});
 
   // handle change
   const handleChange = (e) =>
-    setState (immutably.set (state, [e.target.name], e.target.value));
+    setItem (immutably.set (item, [e.target.name], e.target.value));
 
   return (
     <form
     className='TodoForm'
     onSubmit={(e) => e.preventDefault ()}>
-      <div className='add_item'>
+      <div className='new_item'>
         <input
         type='text'
         name='text'
         placeholder='write a to-do'
-        value={state.text}
+        value={item.text}
         onChange={handleChange}
         />
         <button
         type='submit'
         name='add_item'
-        onClick={() => dispatcher.item.add (state)}>
+        onClick={() => dispatcher.item.add (item)}>
           add item
         </button>
       </div>
