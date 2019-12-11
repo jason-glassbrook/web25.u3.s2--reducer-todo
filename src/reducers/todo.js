@@ -28,56 +28,62 @@ export const actions = [
   'TOGGLE_ALL_ITEMS',
 ];
 
-export const reducer = (state, { type, data }) => {
+export const reducer = (/* state = */ list, { type, data }) => {
   /// find item by ID ///
   const getItemIndex = (item) => (
-    state.findIndex ((elem) => (elem.id === item.id))
+    list.findIndex ((elem) => (elem.id === item.id))
   );
 
-  /// actions ///
-  switch (type) {
-    // add/delete item
-    case 'ADD_ITEM' :
-      return ([
-        ...state,
-        init.item (data.text)
-      ]);
-    case 'DELETE_ITEM' :
-      return (
-        state.filter ((item) => (item.id !== data.item.id))
-      );
-    // mark/toggle specific item
-    case 'MARK_ITEM' :
-      return (
-        immutably.set (state, [getItemIndex (data.item), 'isComplete'], true)
-      );
-    case 'UNMARK_ITEM' :
-      return (
-        immutably.set (state, [getItemIndex (data.item), 'isComplete'], false)
-      );
-    case 'TOGGLE_ITEM' :
-      return (
-        immutably.toggle (state, [getItemIndex (data.item), 'isComplete'])
-      );
-    // mark/toggle all items
-    case 'MARK_ALL_ITEMS' :
-      return (state.map ((item) => (
-        immutably.set (item, ['isComplete'], true)
-      )));
-    case 'UNMARK_ALL_ITEMS' :
-      return (state.map ((item) => (
-        immutably.set (item, ['isComplete'], false)
-      )));
-    case 'TOGGLE_ALL_ITEMS' :
-      return (state.map ((item) => (
-        immutably.toggle (item, ['isComplete'])
-      )));
-    // else
-    default :
-      flag ('warn', 'action not defined');
-      flag ('warn', type);
-      return (state);
-  };
+  try {
+    /// actions ///
+    switch (type) {
+      // add/delete item
+      case 'ADD_ITEM' :
+        return ([
+          ...list,
+          init.item (data.text)
+        ]);
+      case 'DELETE_ITEM' :
+        return (
+          list.filter ((item) => (item.id !== data.id))
+        );
+      // mark/toggle specific item
+      case 'MARK_ITEM' :
+        return (
+          immutably.set (list, [getItemIndex (data), 'isComplete'], true)
+        );
+      case 'UNMARK_ITEM' :
+        return (
+          immutably.set (list, [getItemIndex (data), 'isComplete'], false)
+        );
+      case 'TOGGLE_ITEM' :
+        return (
+          immutably.toggle (list, [getItemIndex (data), 'isComplete'])
+        );
+      // mark/toggle all items
+      case 'MARK_ALL_ITEMS' :
+        return (list.map ((item) => (
+          immutably.set (item, ['isComplete'], true)
+        )));
+      case 'UNMARK_ALL_ITEMS' :
+        return (list.map ((item) => (
+          immutably.set (item, ['isComplete'], false)
+        )));
+      case 'TOGGLE_ALL_ITEMS' :
+        return (list.map ((item) => (
+          immutably.toggle (item, ['isComplete'])
+        )));
+      // else
+      default :
+        flag ('warn', 'action not defined');
+        console.log ('type :', type);
+        return (list);
+    };
+  }
+  catch (error) {
+    flag ('error', 'something bad happened');
+    console.error (error);
+  }
 };
 
 export const dispatcher = (dispatch) => {
