@@ -101,7 +101,7 @@ export const dispatcher = (dispatch) => {
       dispatch ({ type : 'TOGGLE_ALL_ITEMS', data : { ...args } }),
   };
   //
-  return [item, list];
+  return { item, list };
 }
 
 /**************************************/
