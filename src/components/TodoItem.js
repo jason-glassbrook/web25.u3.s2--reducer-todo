@@ -5,14 +5,21 @@ import React from 'react';
   MAIN
 ***************************************/
 const TodoItem = ({ item, dispatcher, ...rest }) => {
-  return (
-    <li
-    className='TodoItem'
-    onClick={() => dispatcher.item.toggle (item)}
-    >
-      {item.text}
-    </li>
-  );
+  console.log ('components/TodoList ~ item :', item);
+
+  try {
+    return (
+      <li
+      className='TodoItem'
+      onClick={() => dispatcher.item.toggle (item)}
+      >
+        {item.text}
+      </li>
+    );
+  }
+  catch (error) {
+    return (<li>OOPS!</li>)
+  }
 };
 
 /**************************************/

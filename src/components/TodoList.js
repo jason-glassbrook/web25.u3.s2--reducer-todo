@@ -8,17 +8,24 @@ import TodoItem from './TodoItem';
   MAIN
 ***************************************/
 const TodoList = ({ list, dispatcher, ...rest }) => {
-  return (
-    <ul>
-      {list.map ((item) => (
-        <TodoItem
-        key={item.id}
-        item={item}
-        dispatcher={dispatcher}
-        />
-      ))}
-    </ul>
-  );
+  console.log ('components/TodoList ~ list :', list);
+
+  try {
+    return (
+      <ul>
+        {list.map ((item) => (
+          <TodoItem
+          key={item.id}
+          item={item}
+          dispatcher={dispatcher}
+          />
+        ))}
+      </ul>
+    );
+  }
+  catch (error) {
+    return (<div>OOPS!</div>)
+  }
 };
 
 /**************************************/
