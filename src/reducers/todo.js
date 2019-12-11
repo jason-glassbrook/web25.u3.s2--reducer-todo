@@ -5,6 +5,9 @@ import immutably from 'tools/immutably';
 
 /**************************************/
 
+/*--------------------------------------
+  init - initial values
+--------------------------------------*/
 export const init = {
   'list' : () => ([]),
   'item' : (text, isComplete) => ({
@@ -14,7 +17,17 @@ export const init = {
   }),
 };
 
-export const actions = [
+/*--------------------------------------
+  actions
+  .make - fun to make an action obj
+  .names - list of action names (types)
+  .senders - funs to send (dispatch) action objs
+--------------------------------------*/
+export const actions = {};
+
+actions.make = (type, data) => ({ type, data });
+
+actions.names = [
   // add/delete item
   'ADD_ITEM',
   'DELETE_ITEM',
@@ -28,6 +41,15 @@ export const actions = [
   'TOGGLE_ALL_ITEMS',
 ];
 
+actions.senders = (dispatch) => Object.fromEntries (
+  actions.names.map ((name) => [
+    name, (...args) => (actions.make (name, ...args))
+  ])
+);
+
+/*--------------------------------------
+  reducer
+--------------------------------------*/
 export const reducer = (/* state = */ list, { type, data }) => {
   /// find item by ID ///
   const getItemIndex = (item) => (
@@ -86,38 +108,10 @@ export const reducer = (/* state = */ list, { type, data }) => {
   }
 };
 
-export const dispatcher = (dispatch) => {
-  // there's probably a way to do this more automatically
-  const item = {
-    add : (data) =>
-      dispatch ({ type : 'ADD_ITEM', data }),
-    delete : (data) =>
-      dispatch ({ type : 'DELETE_ITEM', data }),
-    mark : (data) =>
-      dispatch ({ type : 'MARK_ITEM', data }),
-    unmark : (data) =>
-      dispatch ({ type : 'UNMARK_ITEM', data }),
-    toggle : (data) =>
-      dispatch ({ type : 'TOGGLE_ITEM', data }),
-  };
-  //
-  const list = {
-    mark : () =>
-      dispatch ({ type : 'MARK_ALL_ITEMS' }),
-    unmark : () =>
-      dispatch ({ type : 'UNMARK_ALL_ITEMS' }),
-    toggle : () =>
-      dispatch ({ type : 'TOGGLE_ALL_ITEMS' }),
-  };
-  //
-  return { item, list };
-};
-
 /**************************************/
 
 export default {
   init,
   actions,
   reducer,
-  dispatcher,
 };
