@@ -29,6 +29,10 @@ export const actions = [
 ];
 
 export const reducer = (state, { type, data }) => {
+  /// find item by ID ///
+  const getItem = (item) => (state.indexOf (item.id));
+
+  /// actions ///
   switch (type) {
     // add/delete item
     case 'ADD_ITEM' :
@@ -42,19 +46,16 @@ export const reducer = (state, { type, data }) => {
       );
     // mark/toggle specific item
     case 'MARK_ITEM' :
-      const i = state.indexOf (data.item.id);
       return (
-        immutably.set (state, [i, 'isComplete'], true)
+        immutably.set (state, [getItem (data.item), 'isComplete'], true)
       );
     case 'UNMARK_ITEM' :
-      const i = state.indexOf (data.item.id);
       return (
-        immutably.set (state, [i, 'isComplete'], false)
+        immutably.set (state, [getItem (data.item), 'isComplete'], false)
       );
     case 'TOGGLE_ITEM' :
-      const i = state.indexOf (data.item.id);
       return (
-        immutably.toggle (state, [i, 'isComplete'])
+        immutably.toggle (state, [getItem (data.item), 'isComplete'])
       );
     // mark/toggle all items
     case 'MARK_ALL_ITEMS' :
