@@ -1,9 +1,6 @@
 /// external modules ///
 import React from 'react';
 
-/// reducers ///
-import todo from 'reducers/todo';
-
 /***************************************
   MAIN
 ***************************************/
