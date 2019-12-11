@@ -18,9 +18,36 @@ export const yes     = (x) => (x === true);
 export const no      = (x) => (x === false);
 export const boolean = (x) => (yes (x) || no (x));
 
+/// types ///
+/*--------------------------------------
+  _isa
+  Check if input is of type _t_.
+--------------------------------------*/
+export const _isa = (t, x) => (
+  x && (toString.call(x) === '[object ' + t + ']')
+);
+
+export const type = {
+  // simple
+  'object'   : (x) => (Object.isObject (x)),
+  'array'    : (x) => (Array.isArray (x)),
+  'boolean'  : (x) => (typeof x === 'boolean'),
+  'number'   : (x) => (typeof x === 'number'),
+  'string'   : (x) => (typeof x === 'string'),
+  'function' : (x) => (typeof x === 'function'),
+  // complex
+  'Object'   : (x) => (x instanceof Object),
+  'Array'    : (x) => (x instanceof Array),
+  'Boolean'  : (x) => (x instanceof Boolean),
+  'Number'   : (x) => (x instanceof Number),
+  'String'   : (x) => (x instanceof String),
+  'Function' : (x) => (x instanceof Function),
+}
+
 /**************************************/
 
 export default {
   is, isnt, maybe,
   yes, no, boolean,
+  type,
 };
