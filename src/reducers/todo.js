@@ -76,3 +76,39 @@ export const reducer = (state, { type, data }) => {
       return (state);
   };
 };
+
+export const dispatcher = (dispatch) => {
+  // there's probably a way to do this more automatically
+  const item = {
+    add : (...args) =>
+      dispatch ({ type : 'ADD_ITEM', data : { ...args } }),
+    delete : (...args) =>
+      dispatch ({ type : 'DELETE_ITEM', data : { ...args } }),
+    mark : (...args) =>
+      dispatch ({ type : 'MARK_ITEM', data : { ...args } }),
+    unmark : (...args) =>
+      dispatch ({ type : 'UNMARK_ITEM', data : { ...args } }),
+    toggle : (...args) =>
+      dispatch ({ type : 'TOGGLE_ITEM', data : { ...args } }),
+  };
+  //
+  const list = {
+    mark : (...args) =>
+      dispatch ({ type : 'MARK_ALL_ITEMS', data : { ...args } }),
+    unmark : (...args) =>
+      dispatch ({ type : 'UNMARK_ALL_ITEMS', data : { ...args } }),
+    toggle : (...args) =>
+      dispatch ({ type : 'TOGGLE_ALL_ITEMS', data : { ...args } }),
+  };
+  //
+  return [item, list];
+}
+
+/**************************************/
+
+export default {
+  init,
+  actions,
+  reducer,
+  dispatcher,
+};
