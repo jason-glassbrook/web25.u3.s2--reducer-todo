@@ -24,7 +24,7 @@ export const boolean = (x) => (yes (x) || no (x));
   Check if input is of type _t_.
 --------------------------------------*/
 export const like = (t, x) => (
-  x && (toString.call (x) === '[object ' + t + ']')
+  is (x) && (toString.call (x) === '[object ' + t + ']')
 );
 export const unlike = (t, x) => (!like (t, x));
 
