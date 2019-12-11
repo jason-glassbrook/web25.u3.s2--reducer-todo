@@ -30,7 +30,9 @@ export const actions = [
 
 export const reducer = (state, { type, data }) => {
   /// find item by ID ///
-  const getItem = (item) => (state.indexOf (item.id));
+  const getItemIndex = (item) => (
+    state.findIndex ((elem) => (elem.id === item.id))
+  );
 
   /// actions ///
   switch (type) {
@@ -47,15 +49,15 @@ export const reducer = (state, { type, data }) => {
     // mark/toggle specific item
     case 'MARK_ITEM' :
       return (
-        immutably.set (state, [getItem (data.item), 'isComplete'], true)
+        immutably.set (state, [getItemIndex (data.item), 'isComplete'], true)
       );
     case 'UNMARK_ITEM' :
       return (
-        immutably.set (state, [getItem (data.item), 'isComplete'], false)
+        immutably.set (state, [getItemIndex (data.item), 'isComplete'], false)
       );
     case 'TOGGLE_ITEM' :
       return (
-        immutably.toggle (state, [getItem (data.item), 'isComplete'])
+        immutably.toggle (state, [getItemIndex (data.item), 'isComplete'])
       );
     // mark/toggle all items
     case 'MARK_ALL_ITEMS' :
@@ -81,16 +83,16 @@ export const reducer = (state, { type, data }) => {
 export const dispatcher = (dispatch) => {
   // there's probably a way to do this more automatically
   const item = {
-    add : (...args) =>
-      dispatch ({ type : 'ADD_ITEM', data : { ...args } }),
-    delete : (...args) =>
-      dispatch ({ type : 'DELETE_ITEM', data : { ...args } }),
-    mark : (...args) =>
-      dispatch ({ type : 'MARK_ITEM', data : { ...args } }),
-    unmark : (...args) =>
-      dispatch ({ type : 'UNMARK_ITEM', data : { ...args } }),
-    toggle : (...args) =>
-      dispatch ({ type : 'TOGGLE_ITEM', data : { ...args } }),
+    add : (data) =>
+      dispatch ({ type : 'ADD_ITEM', data }),
+    delete : (data) =>
+      dispatch ({ type : 'DELETE_ITEM', data }),
+    mark : (data) =>
+      dispatch ({ type : 'MARK_ITEM', data }),
+    unmark : (data) =>
+      dispatch ({ type : 'UNMARK_ITEM', data }),
+    toggle : (data) =>
+      dispatch ({ type : 'TOGGLE_ITEM', data }),
   };
   //
   const list = {
