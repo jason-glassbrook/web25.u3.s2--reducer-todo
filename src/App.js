@@ -16,7 +16,7 @@ import './styles/App.css';
 ***************************************/
 const App = () => {
   // reducer
-  const [state, dispatch] = React.useReducer (todo.reducer);
+  const [list, dispatch] = React.useReducer (todo.reducer, todo.init.list ());
   const dispatcher = todo.dispatcher (dispatch);
 
   return (
@@ -25,7 +25,7 @@ const App = () => {
       dispatcher={dispatcher}
       />
       <TodoList
-      list={state.list}
+      list={list}
       dispatcher={dispatcher}
       />
     </div>
