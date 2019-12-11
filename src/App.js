@@ -17,16 +17,16 @@ import './styles/App.css';
 const App = () => {
   // reducer
   const [list, dispatch] = React.useReducer (todo.reducer, todo.init.list ());
-  const dispatcher = todo.dispatcher (dispatch);
+  const effect = todo.actions.senders (dispatch);
 
   return (
     <div className='App'>
       <TodoForm
-      dispatcher={dispatcher}
+      effect={effect}
       />
       <TodoList
       list={list}
-      dispatcher={dispatcher}
+      effect={effect}
       />
     </div>
   );

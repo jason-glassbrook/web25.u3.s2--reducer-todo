@@ -4,14 +4,14 @@ import React from 'react';
 /***************************************
   MAIN
 ***************************************/
-const TodoItem = ({ item, dispatcher, ...rest }) => {
+const TodoItem = ({ item, effect, ...rest }) => {
   console.log ('components/TodoList ~ item :', item);
 
   try {
     return (
       <li
       className='TodoItem'
-      onClick={() => dispatcher.item.toggle (item)}
+      onClick={() => effect.TOGGLE_ITEM (item)}
       >
         {item.text}
       </li>

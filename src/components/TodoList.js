@@ -7,7 +7,7 @@ import TodoItem from './TodoItem';
 /***************************************
   MAIN
 ***************************************/
-const TodoList = ({ list, dispatcher, ...rest }) => {
+const TodoList = ({ list, effect, ...rest }) => {
   console.log ('components/TodoList ~ list :', list);
 
   try {
@@ -17,7 +17,7 @@ const TodoList = ({ list, dispatcher, ...rest }) => {
           <TodoItem
           key={item.id}
           item={item}
-          dispatcher={dispatcher}
+          effect={effect}
           />
         ))}
       </ul>

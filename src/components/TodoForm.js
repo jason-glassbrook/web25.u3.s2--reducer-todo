@@ -7,7 +7,7 @@ import immutably from 'tools/immutably';
 /***************************************
   MAIN
 ***************************************/
-const TodoForm = ({ dispatcher, ...rest }) => {
+const TodoForm = ({ effect, ...rest }) => {
   // form item
   const [item, setItem] = React.useState ({
     'text' : '',
@@ -32,14 +32,14 @@ const TodoForm = ({ dispatcher, ...rest }) => {
         <button
         type='submit'
         name='add_item'
-        onClick={() => dispatcher.item.add (item)}>
+        onClick={() => effect.ADD_ITEM (item)}>
           add item
         </button>
       </div>
       <button
       type='button'
       name='unmark_all_items'
-      onClick={() => dispatcher.list.unmark ()}>
+      onClick={() => effect.UNMARK_ALL_ITEMS ()}>
         clear completion on all items
       </button>
     </form>
