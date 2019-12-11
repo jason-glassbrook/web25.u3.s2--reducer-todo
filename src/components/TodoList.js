@@ -23,4 +23,4 @@ const TodoList = ({ list, dispatcher, ...rest }) => {
 
 /**************************************/
 
-export default TodoItem;
+export default TodoList;
