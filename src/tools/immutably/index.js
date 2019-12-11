@@ -5,8 +5,9 @@
 *******************************************************************************/
 
 /// tools ///
-import nullably from 'tools/nullably';
+import { flag } from 'tools/hi';
 import { isnt, boolean } from 'tools/iffy';
+import nullably from 'tools/nullably';
 
 /***********************************************************
   MAIN
@@ -22,20 +23,45 @@ import { isnt, boolean } from 'tools/iffy';
   - make a copy (shallow) of an object
   - set the value at the end of a "path" (eg: a list of fields or indexes)
 --------------------------------------*/
-export const set = (object, /* path */ [field, ...rest], value) =>
-  (isnt (field) ? value : {
+function set (object, path, value) {
+  const fallback = object;
+
+  if (isnt (object)) {
+    flag ('warn', 'immutably/set : `object` is `null` or `undefined`');
+    console.warn ('<-- <fallback>');
+    return (fallback);
+  }
+
+  try {
+    return (_set (object, path, value));
+  }
+  catch (error) {
+    flag ('error', 'immutably/set : an error occured');
+    console.error (error);
+    console.warn ('<-- <fallback>');
+    return (fallback);
+  }
+}
+
+function _set (object, /* path = */ [field, ...rest], value) {
+  return (isnt (field) ? value : {
     ...object,
-    [field] : set (object [field], rest, value)
+    [field] : _set ((
+      // if field exists, then enter it, else create a blank object
+      object.hasOwnProperty (field) ? object [field] : {}
+      ), rest, value
+    )
   });
+}
 
 /*--------------------------------------
-  setField, setItem
+  setField, setIndex
 ----------------------------------------
   - aliases for easier reading
 --------------------------------------*/
 export const setField = (object, field, value) =>
   set (object, [field], value);
-export const setItem = (array, index, value) =>
+export const setIndex = (array, index, value) =>
   set (array, [index], value);
 
 /*--------------------------------------
@@ -51,13 +77,13 @@ export const setBy = (object, path, fun) =>
   );
 
 /*--------------------------------------
-  setFieldBy, setItemBy
+  setFieldBy, setIndexBy
 ----------------------------------------
   - aliases for easier reading
 --------------------------------------*/
 export const setFieldBy = (object, field, fun) =>
   setBy (object, [field], fun);
-export const setItemBy = (array, index, fun) =>
+export const setIndexBy = (array, index, fun) =>
   setBy (array, [index], fun);
 
 /***************************************
@@ -84,19 +110,19 @@ export const toggle = (object, path) =>
   set (object, path, _toggle (object[path]));
 
 /*--------------------------------------
-  toggleField, toggleItem
+  toggleField, toggleIndex
 ----------------------------------------
   - aliases for easier reading
 --------------------------------------*/
 export const toggleField = (object, field) =>
   toggle (object, [field]);
-export const toggleItem = (array, index) =>
+export const toggleIndex = (array, index) =>
   toggle (array, [index]);
 
 /**************************************/
 
 export default {
-  set, setField, setItem,
-  setBy, setFieldBy, setItemBy,
-  toggle, toggleField, toggleItem,
+  set, setField, setIndex,
+  setBy, setFieldBy, setIndexBy,
+  toggle, toggleField, toggleIndex,
 };
