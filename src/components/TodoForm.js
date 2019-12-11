@@ -10,7 +10,8 @@ import immutably from 'tools/immutably';
 const TodoForm = ({ dispatcher, ...rest }) => {
   // form item
   const [item, setItem] = React.useState ({
-    'text' : '',});
+    'text' : '',
+  });
 
   // handle change
   const handleChange = (e) =>
