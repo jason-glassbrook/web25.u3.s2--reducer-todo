@@ -25,7 +25,10 @@ export const init = {
 --------------------------------------*/
 export const actions = {};
 
-actions.make = (type, data) => ({ type, data });
+actions.make = (type, data) => {
+  console.log ({ type, data });
+  return ({ type, data });
+};
 
 actions.names = [
   // add/delete item
@@ -43,7 +46,7 @@ actions.names = [
 
 actions.senders = (dispatch) => Object.fromEntries (
   actions.names.map ((name) => [
-    name, (...args) => (actions.make (name, ...args))
+    name, (...args) => dispatch (actions.make (name, ...args))
   ])
 );
 
