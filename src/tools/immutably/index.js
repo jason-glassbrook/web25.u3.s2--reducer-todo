@@ -6,7 +6,7 @@
 
 /// tools ///
 import { flag } from 'tools/hi';
-import { isnt, boolean } from 'tools/iffy';
+import { isnt, like } from 'tools/iffy';
 import nullably from 'tools/nullably';
 
 /***********************************************************
@@ -16,6 +16,31 @@ import nullably from 'tools/nullably';
 /***************************************
   setters
 ***************************************/
+
+export function _set (object, /* path = */ [field, ...rest], value) {
+  if (isnt (field)) {
+    return (value);
+  }
+  else {
+    const subject = _set ((
+      // if field exists, then enter it, else create a blank object
+      object.hasOwnProperty (field) ? object [field] : {}
+      ), rest, value
+    );
+
+    if (like ('Array', object)) {
+      const a = [ ...object ]; a[field] = subject;
+      return (a);
+    }
+    else if (like ('Object', object)) {
+      const o = { ...object }; o[field] = subject;
+      return (o);
+    }
+    else {
+      throw ('currently, you can only set fields in Object and Array objects');
+    }
+  }
+}
 
 /*--------------------------------------
   set
@@ -41,17 +66,6 @@ function set (object, path, value) {
     console.warn ('<-- <fallback>');
     return (fallback);
   }
-}
-
-function _set (object, /* path = */ [field, ...rest], value) {
-  return (isnt (field) ? value : {
-    ...object,
-    [field] : _set ((
-      // if field exists, then enter it, else create a blank object
-      object.hasOwnProperty (field) ? object [field] : {}
-      ), rest, value
-    )
-  });
 }
 
 /*--------------------------------------
@@ -90,8 +104,8 @@ export const setIndexBy = (array, index, fun) =>
   togglers
 ***************************************/
 
-export const _toggle = (x) => {
-  if (boolean (x)) {
+export function _toggle (x) {
+  if (like ('Boolean', x)) {
     return (!x);
   } else {
     console.warn (`The value you're toggling isn't boolean.`);
