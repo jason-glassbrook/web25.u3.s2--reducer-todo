@@ -23,7 +23,7 @@ import { isnt, boolean } from 'tools/iffy';
   - set the value at the end of a "path" (eg: a list of fields or indexes)
 --------------------------------------*/
 export const set = (object, /* path */ [field, ...rest], value) =>
-  (isnt (field) ? object : {
+  (isnt (field) ? value : {
     ...object,
     [field] : set (object [field], rest, value)
   });
