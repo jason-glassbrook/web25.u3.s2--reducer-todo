@@ -94,16 +94,16 @@ export const dispatcher = (dispatch) => {
   };
   //
   const list = {
-    mark : (...args) =>
-      dispatch ({ type : 'MARK_ALL_ITEMS', data : { ...args } }),
-    unmark : (...args) =>
-      dispatch ({ type : 'UNMARK_ALL_ITEMS', data : { ...args } }),
-    toggle : (...args) =>
-      dispatch ({ type : 'TOGGLE_ALL_ITEMS', data : { ...args } }),
+    mark : () =>
+      dispatch ({ type : 'MARK_ALL_ITEMS' }),
+    unmark : () =>
+      dispatch ({ type : 'UNMARK_ALL_ITEMS' }),
+    toggle : () =>
+      dispatch ({ type : 'TOGGLE_ALL_ITEMS' }),
   };
   //
   return { item, list };
-}
+};
 
 /**************************************/
 
