@@ -121,7 +121,7 @@ export function _toggle (x) {
   - toggle the boolean value of one "path" (eg: a field or index)
 --------------------------------------*/
 export const toggle = (object, path) =>
-  set (object, path, _toggle (object[path]));
+  set (object, path, _toggle (nullably.get (object, path)));
 
 /*--------------------------------------
   toggleField, toggleIndex
