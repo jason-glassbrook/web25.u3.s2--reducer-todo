@@ -12,9 +12,8 @@ const TodoForm = ({ dispatcher, ...rest }) => {
   const [state, setState] = React.useState ({ text : '' });
 
   // handle change
-  const handleChange = (e) => setState ((state) => (
-    immutably.set (state, [e.target.name], e.target.value)
-  ));
+  const handleChange = (e) =>
+    setState (immutably.set (state, [e.target.name], e.target.value));
 
   return (
     <form
@@ -24,21 +23,21 @@ const TodoForm = ({ dispatcher, ...rest }) => {
         <input
         type='text'
         name='text'
-        placeholder='to-do'
+        placeholder='write a to-do'
         value={state.text}
         onChange={handleChange}
         />
         <button
         type='submit'
         name='add_item'
-        onClick={dispatcher.item.add (state)}>
+        onClick={() => dispatcher.item.add (state)}>
           add item
         </button>
       </div>
       <button
       type='button'
       name='unmark_all_items'
-      onClick={dispatcher.list.unmark}>
+      onClick={() => dispatcher.list.unmark ()}>
         clear completion on all items
       </button>
     </form>
